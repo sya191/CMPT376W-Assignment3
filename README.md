@@ -1,27 +1,70 @@
-# LogLens - find all your log problems fast
+# LogLens
 
-LogLens is a really simple program that tells you what's happening in your logs. It is useful for developers, IT staff, customers, and anybody who has a computer. You don't really need to know anything about log files to get started. It finds problems in your files, so you can use it to make decisions about your system. Your data is always 100% secure.
+LogLens is a local, command-line Python script (`loglens.py`) for counting records in a CSV log file by log level.
 
-## Requirements and things
+* **Local only:** LogLens runs entirely on your computer and does not transmit, upload, or store your data externally.
+* **Read-only:** It reads your CSV file without modifying, repairing, or rewriting it.
+* **Scope:** It counts matching records; it does not diagnose system failures.
 
-You need Python. Most computers already have it, and version 3.6 or later should be good enough. It works on Windows, Mac, and Linux. Other than that, there is not much to know.
+## Requirements
 
-## Get started
+* **Python 3.10 or newer**
+* Only the Python standard library is used (no third-party packages are required).
+* Basic familiarity with CSV files and using a terminal (written for computing students and new technical interns; no prior experience with LogLens is required).
 
-First, get the project files from GitHub. Then install the program using `pip install log-lens` and run it by typing `loglens`. If you can't make it work, see docs/INSTALL.md. You probably won't need those instructions.
-
-## Using the program
-
-Run the following command after you have found the correct folder:
-
-`loglens --input mylog.csv --severity error`
-
-The software scans your log, fixes mistakes, and shows you what went wrong. You will see a number once it is finished. You can also run it on real production files without worrying about any side effects.
+For step-by-step instructions on downloading the repository and verifying your setup, see [docs/INSTALL.md](docs/INSTALL.md).
 
 ## Input format
 
-The input should be a CSV file. Log files tend to have fields describing the time and what happened, but LogLens is flexible and will work with whatever columns your monitoring system uses. A small example is included somewhere in this repository.
+LogLens expects a CSV file with column headers named **exactly**:
 
-## Questions
+* `timestamp`
+* `level`
+* `message`
 
-If something doesn't work, just contact the developers or create an issue. Make sure you describe the problem so somebody can help. This is a basic tool, so the instructions should be pretty obvious.
+Accepted values for the `level` column are uppercase `INFO`, `WARN`, and `ERROR`. A sample input file is included at `data/sample_logs.csv`.
+
+## Using the program
+
+Open a terminal in the **repository root** (the folder containing `loglens.py`). The examples below use `python`; on some systems, the launcher is `python3` or `py` instead.
+
+### Count records for a specific log level
+
+```bash
+python loglens.py --file data/sample_logs.csv --level ERROR
+```
+
+Expected output:
+
+```text
+Records matching ERROR: 2
+```
+
+### Count all records
+
+Omit the optional `--level` argument to count every record in the file:
+
+```bash
+python loglens.py --file data/sample_logs.csv
+```
+
+Expected output:
+
+```text
+Records matching ALL: 6
+```
+
+### Command-line options
+
+To view all supported arguments and options:
+
+```bash
+python loglens.py --help
+```
+
+* `--file` *(required)*: Path to the input CSV log file.
+* `--level` *(optional)*: Filter count by `INFO`, `WARN`, or `ERROR`.
+
+## Reporting issues
+
+If you run into a problem, check [docs/INSTALL.md](docs/INSTALL.md) for troubleshooting steps first. When opening an issue, include your Python version, the command you ran, the error message, and a minimal, **sanitized** reproducible example. **Do not post private or sensitive log data publicly.**

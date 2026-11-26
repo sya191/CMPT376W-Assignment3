@@ -1,31 +1,74 @@
-# How to install LogLens and use it
+# LogLens Installation and Setup Guide
 
-These instructions are for everyone. They should work the same way on every machine, so read through them and do what they say.
+This guide walks you through downloading LogLens, navigating to the repository root, and verifying that the script runs on your computer. For full usage details and CSV formatting rules, see [README.md](../README.md).
 
-## Things you need
+## Prerequisites
 
-* Python 3.8 or newer, plus pip.
-* A network connection so LogLens can upload your files for checking.
-* A file containing logs from your computer or a work system.
+* **Python 3.10 or newer**
+* A terminal
 
-## Getting the program
+LogLens runs locally using only the Python standard library. No third-party dependencies or internet connection are needed once you have the repository files.
 
-Get LogLens from the GitHub website. Look for the green button and download a ZIP. Then extract it. Make sure you are in the right place in the terminal, because you will need that later. Once everything is done, you can install it.
+To check your Python version, run:
 
-Run this command:
+```bash
+python --version
+```
 
-pip install loglens
+> **Note:** On some computers, the Python launcher is `python3` or `py` instead of `python`. Use whichever command reports Python 3.10 or newer.
 
-Then move on to the next step.
+## 1. Get the repository files
 
-## Running a check
+1. Download or clone the repository from GitHub (for example, select **Code → Download ZIP** and extract the archive, or clone it with `git`).
+2. Note the location of the extracted or cloned project folder.
 
-First, take a CSV file from your logging system and put it in the project directory. It needs the columns `date`, `severity`, and `details` or the tool might fail. Running it is easy:
+## 2. Navigate to the repository root
 
-python loglens.py data/sample_logs.csv
+Open a terminal and change into the **repository root**. This is the top-level folder that contains `loglens.py`:
 
-For your own files, type `python loglens.py --file /Users/alex/Desktop/system-log.csv --level error`. This will print results when the analysis is over. You can find the example data in the project somewhere.
+```bash
+cd path/to/CMPT376W-Assignment3
+```
 
-## Problems and fixes
+Make sure `loglens.py` and the `data/` directory are present in this folder before running commands.
 
-If you see a "file not found" error, reinstall Python and try again. If the software complains about the CSV, there might be something wrong with your system. If none of this works, open a public GitHub issue and attach your entire original CSV so the team can investigate. Please do not waste the maintainers' time with problems caused by skipped steps.
+## 3. Verify your setup
+
+Run LogLens against the included sample log file (`data/sample_logs.csv`) to confirm everything works:
+
+```bash
+python loglens.py --file data/sample_logs.csv --level ERROR
+```
+
+Expected output:
+
+```text
+Records matching ERROR: 2
+```
+
+You can also omit the optional `--level` flag to count all records in the sample file:
+
+```bash
+python loglens.py --file data/sample_logs.csv
+```
+
+Expected output:
+
+```text
+Records matching ALL: 6
+```
+
+To view all valid command-line options:
+
+```bash
+python loglens.py --help
+```
+
+Once verification succeeds, see [README.md](../README.md) for required CSV column headers and general usage.
+
+## Troubleshooting
+
+* **`python` is not recognized or shows an older version:** Try `python3` or `py` instead, and confirm that Python 3.10 or newer is installed.
+* **`File not found` error:** Confirm that your terminal is in the repository root (where `loglens.py` is located) and check the spelling and path of the `--file` argument.
+* **CSV column or level errors:** Refer to [README.md](../README.md) for the exact required headers and uppercase level values.
+* **Still stuck?** Confirm your Python version, the exact command you ran, and the error message before opening an issue. Include a problem description and a minimal, **sanitized** reproducible example. **Do not attach raw log files or post private or sensitive data publicly.**
